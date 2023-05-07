@@ -40,11 +40,9 @@ func prefixSumsWithExactMatchCount(nums []int, k int) ([]int, int) {
 	numsSum := make([]int, len(nums))
 	for i, v := range nums {
 		numsSum[i] = totalSoFar + v
+		// fmt.Println(numsSum[i], v, k)
 		totalSoFar = numsSum[i]
 		if totalSoFar == k {
-			matches += 1
-		}
-		if v == k {
 			matches += 1
 		}
 	}
@@ -54,16 +52,21 @@ func prefixSumsWithExactMatchCount(nums []int, k int) ([]int, int) {
 func subarraySum(nums []int, k int) int {
 	prefixSums, matches := prefixSumsWithExactMatchCount(nums, k)
 	fmt.Println(prefixSums, matches)
-	var counter int
+	counter := 0
 
 	// we want to find the number of j's, that is greater than i, where nums[j] - nums[i] = k
+	// need to avoid redundant solutions.
 
 	for i, n := range prefixSums {
-		for j, m := range prefixSums {
-			if j < i {
-				continue
-			}
+		if nums[i] == k {
+			fmt.Println(i)
+			fmt.Println("here")
+			counter += 1
+		}
+		for _, m := range prefixSums {
+			fmt.Println(m, n)
 			if m-n == k {
+				fmt.Println("here")
 				counter += 1
 			}
 		}
