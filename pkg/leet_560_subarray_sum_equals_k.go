@@ -34,42 +34,36 @@ import "fmt"
 // n = full traverse
 // log n = binary search for match
 
-func prefixSumsWithExactMatchCount(nums []int, k int) ([]int, int) {
+func prefixSumsWithExactMatchCount(nums []int, k int) []int {
 	var totalSoFar int
-	var matches int
 	numsSum := make([]int, len(nums))
 	for i, v := range nums {
 		numsSum[i] = totalSoFar + v
-		// fmt.Println(numsSum[i], v, k)
 		totalSoFar = numsSum[i]
-		if totalSoFar == k {
-			matches += 1
-		}
 	}
-	return numsSum, matches
+	return numsSum
 }
 
 func subarraySum(nums []int, k int) int {
-	prefixSums, matches := prefixSumsWithExactMatchCount(nums, k)
-	fmt.Println(prefixSums, matches)
+	prefixSums := prefixSumsWithExactMatchCount(nums, k)
+	// fmt.Println(prefixSums, matches)
 	counter := 0
 
 	// we want to find the number of j's, that is greater than i, where nums[j] - nums[i] = k
 	// need to avoid redundant solutions.
 
 	for i, n := range prefixSums {
+		// nums[i] is the prefix sum, an exact match should increment.
 		if nums[i] == k {
-			fmt.Println(i)
-			fmt.Println("here")
 			counter += 1
 		}
 		for _, m := range prefixSums {
-			fmt.Println(m, n)
+			// fmt.Println(m, n)
 			if m-n == k {
 				fmt.Println("here")
 				counter += 1
 			}
 		}
 	}
-	return counter + matches
+	return counter
 }
