@@ -1,5 +1,7 @@
 package pkg
 
+import "fmt"
+
 func kahnsAlgorithm() ([]int, error) {
 
 	return []int{}, nil
@@ -32,6 +34,7 @@ type binaryHeap[T any] struct {
 }
 
 func NewBinaryHeap[T any](cmpFnc func(a, b T) bool) binaryHeap[T] {
+
 	return binaryHeap[T]{
 		h:    []T{},
 		tail: -1, // tail is 0th position after insert
@@ -42,26 +45,39 @@ func NewBinaryHeap[T any](cmpFnc func(a, b T) bool) binaryHeap[T] {
 // places last element at root and sinks into position to satisfy the heap property
 func (b *binaryHeap[T]) heapify() {
 
-	// new root becomes last element
-	b.h[0] = b.h[b.tail]
+	// if we are at start or last element is first element, return.
+	if b.tail <= 0 {
+		return
+	}
 
-	// last element decrements 1 position
-	b.tail = b.tail - 1
+	// new root becomes last element
+	b.h = append([]T{b.h[b.tail]}, b.h...)
+	fmt.Println("not heap")
 
 	curIndex := 0
 	for !b.isHeap(curIndex) {
+		fmt.Println("not heap")
 		curIndex = b.nextRoot(curIndex)
 	}
 }
 
 func (b *binaryHeap[T]) isHeap(i int) bool {
 
-	// left child is 2n, right child is 2n + 1
+	// left child is 2n + 1, right child is 2n + 2 ( when zero based )
 	root := b.h[i]
-	left := b.h[2*i]
-	right := b.h[2*i+1]
 
-	return b.cmp(root, left) && b.cmp(root, right)
+	if b.tail >= 2*i+1 {
+		left := b.h[2*i+1]
+
+		if b.tail >= 2*i+2 {
+			right := b.h[2*i+2]
+			return b.cmp(root, left) && b.cmp(root, right)
+		}
+		return b.cmp(root, left)
+	}
+
+	// leaf node is always a heap
+	return true
 }
 
 func (b *binaryHeap[T]) nextRoot(i int) int {
