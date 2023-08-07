@@ -1,2 +1,2 @@
-# Go-Blind
-Lightweight blind 75 with convenient unit tests in Go.
+# Go-Vault
+Data structures, algorithms, and leet code solutions with unit tests in Go.
