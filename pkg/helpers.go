@@ -1,7 +1,5 @@
 package pkg
 
-import "fmt"
-
 func kahnsAlgorithm() ([]int, error) {
 
 	return []int{}, nil
@@ -42,26 +40,53 @@ func NewBinaryHeap[T any](cmpFnc func(a, b T) bool) binaryHeap[T] {
 	}
 }
 
-// places last element at root and sinks into position to satisfy the heap property
-func (b *binaryHeap[T]) heapify() {
+func (b *binaryHeap[T]) sink() {
 
 	// if we are at start or last element is first element, return.
 	if b.tail <= 0 {
 		return
 	}
 
-	// new root becomes last element
-	b.h = append([]T{b.h[b.tail]}, b.h...)
-	fmt.Println("not heap")
-
 	curIndex := 0
-	for !b.isHeap(curIndex) {
-		fmt.Println("not heap")
-		curIndex = b.nextRoot(curIndex)
+	for !b.isSinkHeap(curIndex) {
+		newHead := b.nextRoot(curIndex)
+
+		tmp := b.h[curIndex]
+		b.h[curIndex] = b.h[newHead]
+		b.h[newHead] = tmp
+
+		curIndex = newHead
 	}
 }
 
-func (b *binaryHeap[T]) isHeap(i int) bool {
+func (b *binaryHeap[T]) bubbleUp() {
+
+	// if we are at start or last element is first element, return.
+	if b.tail <= 0 {
+		return
+	}
+
+	curIndex := b.tail
+	// only need to compare new node with parent, repeatedly.
+	for !b.isBubbleHeap(curIndex) {
+		var newHead int
+
+		if curIndex%2 == 0 {
+			newHead = curIndex/2 - 1
+		} else {
+			// assuming round down
+			newHead = curIndex / 2
+		}
+
+		tmp := b.h[newHead]
+		b.h[newHead] = b.h[curIndex]
+		b.h[curIndex] = tmp
+
+		curIndex = newHead
+	}
+}
+
+func (b *binaryHeap[T]) isSinkHeap(i int) bool {
 
 	// left child is 2n + 1, right child is 2n + 2 ( when zero based )
 	root := b.h[i]
@@ -80,13 +105,40 @@ func (b *binaryHeap[T]) isHeap(i int) bool {
 	return true
 }
 
+func (b *binaryHeap[T]) isBubbleHeap(i int) bool {
+
+	if i == 0 {
+		return true
+	}
+
+	node := b.h[i]
+
+	if i%2 == 0 {
+		return b.cmp(b.h[i/2-1], node)
+	} else {
+		// assuming round down
+		return b.cmp(b.h[i/2], node)
+	}
+}
+
 func (b *binaryHeap[T]) nextRoot(i int) int {
 
-	if b.cmp(b.h[2*i], b.h[2*i+1]) {
+	if b.tail >= 2*i+1 {
+		left := b.h[2*i+1]
+
+		if b.tail >= 2*i+2 {
+			right := b.h[2*i+2]
+
+			if b.cmp(left, right) {
+				return 2*i + 1
+			} else {
+				return 2*i + 2
+			}
+		}
 		return 2*i + 1
-	} else {
-		return 2 * i
 	}
+
+	return b.tail
 }
 
 func (b *binaryHeap[T]) pop() T {
@@ -95,21 +147,26 @@ func (b *binaryHeap[T]) pop() T {
 	t := b.h[0]
 
 	// satisfy heap property after pop.
-	b.heapify()
+	b.h[0] = b.h[b.tail]
+	b.h = b.h[:len(b.h)-1]
+
+	b.tail = b.tail - 1
+
+	b.sink()
 
 	return t
 }
 
 func (b *binaryHeap[T]) peek() T {
 
-	return b.h[b.tail]
+	return b.h[0]
 }
 
 func (b *binaryHeap[T]) push(t T) {
 
-	// add element to end of heap
+	// add element to bottom of heap
 	b.h = append(b.h, t)
 	b.tail = b.tail + 1
 
-	b.heapify()
+	b.bubbleUp()
 }
