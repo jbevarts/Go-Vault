@@ -1,2 +1,2 @@
 # Go-Vault
-Data structures, algorithms, and leet code solutions with unit tests in Go.
+Data structures, algorithms, and leetcode solutions with unit tests in Go.
