@@ -1,5 +1,19 @@
 package pkg
 
+/* 
+Helper Terminology
+
+Adjacency List: 
+array of arrays with length equal to # of vertices.  Each entry starts with a vertex and each element
+represnts nodes that vertex touches.
+
+For instance, 3<-1->2->4 would be represented as:
+[[1,3,2],
+[2,4],
+[3],
+[4]]
+*/
+
 func kahnsAlgorithm() ([]int, error) {
 
 	return []int{}, nil
@@ -9,18 +23,30 @@ type topoSortVertex struct {
 	seen     bool
 	seeing   bool
 	val      int
-	outEdges []topoSortVertex
 }
 
-func topologicalSortDFS(e []int) ([]int, error) {
+// func topologicalSortDFS(adj [][]int) ([]int, error) {
 
-	// create vertices, map of val -> vertex.
-	//
+// 	if len(adj) < 1 {
+// 		return []int, nil
+// 	}
 
-	// could keep vertices in a priority queue by whether or not seen is true.
+// 	var arr []topoSortVertex
+// 	for k, v := range adj {
+// 		arr = append(arr, topoSortVertex{val: v})
+// 	}
 
-	return []int{}, nil
-}
+// 	for k, v := range adj {
+
+// 	}
+
+// 	// create vertices, map of val -> vertex.
+// 	//
+
+// 	// could keep vertices in a priority queue by whether or not seen is true.
+
+// 	return []int{}, nil
+// }
 
 // binaryHeap stores a collection of Node T's and maintains the Heap property.  Siblings have no orderings.
 // cmp should be a comparator function that returns true when the first element is equal or higher priority
