@@ -119,7 +119,7 @@ func (b *binaryHeap[T]) nextRoot(i int) int {
 	return b.tail
 }
 
-func (b *binaryHeap[T]) pop() T {
+func (b *binaryHeap[T]) Pop() T {
 
 	// return first element
 	t := b.h[0]
@@ -135,12 +135,12 @@ func (b *binaryHeap[T]) pop() T {
 	return t
 }
 
-func (b *binaryHeap[T]) peek() T {
+func (b *binaryHeap[T]) Peek() T {
 
 	return b.h[0]
 }
 
-func (b *binaryHeap[T]) push(t T) {
+func (b *binaryHeap[T]) Push(t T) {
 
 	// add element to bottom of heap
 	b.h = append(b.h, t)
