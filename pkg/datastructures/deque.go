@@ -21,6 +21,10 @@ func NewDeque[T any](capacity int) Deque[T] {
 	}
 }
 
+func (d *Deque[T]) Size() int {
+	return d.size
+}
+
 func (d *Deque[T]) resizeDeque() {
 
 	n := make([]T, d.loadCapacity*2)
