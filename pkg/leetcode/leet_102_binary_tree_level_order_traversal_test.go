@@ -9,24 +9,103 @@ import (
 
 func Test_levelOrder(t *testing.T) {
 
-	n := &TreeNode{Val: 3}
-	n.Left = &TreeNode{Val: 9}
-	n.Right = &TreeNode{Val: 20}
-	n.Right.Right = &TreeNode{Val: 7}
-	n.Right.Left = &TreeNode{Val: 15}
-
-	response := levelOrder(n)
-
-	if response == nil {
-		t.Error("nil response not expected")
+	tests := []struct {
+		tree *TreeNode
+		want [][]int
+	}{
+		{
+			tree: &TreeNode{
+					Val: 3,
+					Left: &TreeNode{
+						Val: 9,
+					},
+					Right: &TreeNode{
+						Val: 20, 
+						Left: &TreeNode{
+							Val: 15,
+						}, 
+						Right: &TreeNode{
+							Val: 7,
+						},
+				},
+			},
+			want: [][]int{{3}, {9, 20}, {15, 7}},
+		},
+		{
+			tree: &TreeNode{
+				Val: 3,
+				Left: &TreeNode{
+					Val: 9,
+					Left: &TreeNode{
+						Val: 4,
+					}, 
+					Right: &TreeNode{
+						Val: 2,
+					},
+				},
+				Right: &TreeNode{
+					Val: 20, 
+					Left: &TreeNode{
+						Val: 17,
+						Left: &TreeNode{
+							Val: 1,
+						}, 
+						Right: &TreeNode{
+							Val: 7,
+						},
+					}, 
+					Right: &TreeNode{
+						Val: 8,
+					},
+				},
+			},
+			want: [][]int{{3}, {9, 20}, {4, 2, 17, 8}},
+		},
+		{
+			tree: &TreeNode{
+				Val: 3,
+				Left: &TreeNode{
+					Val: 9,
+				},
+			},
+			want: [][]int{{3}, {9}},
+		},
+		{
+			tree: &TreeNode{
+				Val: 3,
+			},
+			want: [][]int{{3}},
+		},
+		{
+			tree: nil,
+			want: [][]int{},
+		},
+		{
+			tree: &TreeNode{
+				Val: 3,
+				Left: &TreeNode{
+					Val: 9,
+				},
+				Right: &TreeNode{
+					Val: 6,
+				},
+			},
+			want: [][]int{{3}, {9, 6}},
+		},
 	}
-	expected := [][]int{{3}, {9, 20}, {15, 7}}
 
-	fmt.Println(expected)
-	fmt.Println(response)
-	for i, v := range response {
-		for _, w := range expected[i] {
-			assert.Equal(t, w, v)
+	for _, tt := range tests {
+		res := levelOrder(tt.tree)
+
+		if res == nil {
+			t.Error("nil response not expected")
+		}
+		fmt.Println(tt.want)
+		fmt.Println(res)
+		for i, v := range res {
+			for _, w := range tt.want[i] {
+				assert.Equal(t, w, v)
+			}
 		}
 	}
 }

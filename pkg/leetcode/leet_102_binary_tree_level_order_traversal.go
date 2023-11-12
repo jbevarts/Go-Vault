@@ -26,26 +26,39 @@ func levelOrder(root *TreeNode) [][]int {
 
 func helper(d datastructures.Deque[TreeNode], final [][]int) [][]int {
 
+	// If we have completed the entire of deque of nodes, return the level ordering, final.
 	if d.Size() == 0 {
 		return final
 	}
 
+	// Create a new deque for each row.
 	var nextDeque datastructures.Deque[TreeNode]
+	// Maintain 'this rows' ordering with cur.
 	cur := []int{}
 
+	// d should have size == qty of previous row's children.
 	for d.Size() > 0 {
+		// Take next child
 		next, _ := d.PopHead()
+		
+		// Add child to the end of this rows ordering.
 		cur = append(cur, next.Val)
+
+		// for both children of next, add to end of queue to be processed by next call. 
 		pushNodeToTail(&nextDeque, next.Left)
 		pushNodeToTail(&nextDeque, next.Right)
 	}
 
+	// Concatenate cur with previous calls level order.
 	final = append(final, cur)
 
+	// Recursively call helper with deque of children and partial answer, final.
 	return helper(nextDeque, final)
 }
 
 func pushNodeToTail(d *datastructures.Deque[TreeNode], n *TreeNode) {
+
+	// Avoid populating nil children.
 	if n != nil {
 		d.PushTail(*n)
 	}
