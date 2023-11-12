@@ -21,6 +21,14 @@ func NewDeque[T any](capacity int) Deque[T] {
 	}
 }
 
+func NewDequeWithValues[T any](vals []T, capacity int) Deque[T] {
+
+	return Deque[T]{
+		deque:        vals,
+		loadCapacity: capacity,
+	}
+}
+
 func (d *Deque[T]) Size() int {
 	return d.size
 }
