@@ -1,4 +1,4 @@
-package pkg
+package leetcode
 
 // lengthOfLIS returns length of longest, increasing subsequence of nums.
 func lengthOfLIS(nums []int) int {

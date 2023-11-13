@@ -1,4 +1,4 @@
-package pkg
+package leetcode
 
 import (
 	"Go-Blind/pkg/datastructures"
