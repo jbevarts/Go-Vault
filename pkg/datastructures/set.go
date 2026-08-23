@@ -3,6 +3,7 @@ package datastructures
 // generic Set implementation with a map backing.
 
 type void struct{}
+
 var member void
 
 type Set[T comparable] struct {
@@ -15,7 +16,7 @@ func NewSet[T comparable]() *Set[T] {
 
 func (s *Set[T]) Insert(elem T) {
 	s.elems[elem] = member
-} 
+}
 
 func (s *Set[T]) Remove(elem T) {
 	delete(s.elems, elem)
@@ -31,7 +32,7 @@ func (s *Set[T]) Contains(elem T) bool {
 // Non-deterministic output
 func (s *Set[T]) ListElements() []T {
 	elems := []T{}
-	for k, _ := range s.elems {
+	for k := range s.elems {
 		elems = append(elems, k)
 	}
 	return elems

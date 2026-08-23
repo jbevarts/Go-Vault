@@ -8,7 +8,7 @@ import (
 
 func Test_binaryHeap(t *testing.T) {
 
-	bh := NewBinaryHeap[int](func(a, b int) bool {
+	bh := NewBinaryHeap(func(a, b int) bool {
 		return a <= b
 	})
 
@@ -24,7 +24,7 @@ func Test_binaryHeap(t *testing.T) {
 	assert.Equal(t, bh.Pop(), 15)
 	assert.Equal(t, bh.Pop(), 16)
 
-	bh = NewBinaryHeap[int](func(a, b int) bool {
+	bh = NewBinaryHeap(func(a, b int) bool {
 		return a >= b
 	})
 
@@ -40,7 +40,7 @@ func Test_binaryHeap(t *testing.T) {
 	assert.Equal(t, bh.Pop(), 2)
 	assert.Equal(t, bh.Pop(), 1)
 
-	bh = NewBinaryHeap[int](func(a, b int) bool {
+	bh = NewBinaryHeap(func(a, b int) bool {
 		return a >= b
 	})
 
