@@ -40,7 +40,55 @@ func NewTreeNode[T comparable](val T, left *TreeNode[T], right *TreeNode[T]) *Tr
 	}
 }
 
-func GenerateTreeFromIntegers[T comparable](vals []T) *TreeNode[T] {
+func GetPreorderIntegersFromBST(t *TreeNode[int]) []int {
+	if t == nil {
+		return nil
+	}
+
+	var result []int
+	getPreorderIntegersFromBST(t, func(v int) {
+		result = append(result, v)
+	})
+
+	return result
+}
+
+func getPreorderIntegersFromBST(t *TreeNode[int], doFunc func(int)) {
+	if t == nil {
+		return
+	}
+
+	doFunc(t.Val)
+	getPreorderIntegersFromBST(t.Left, doFunc)
+	getPreorderIntegersFromBST(t.Right, doFunc)
+}
+
+func GetInorderIntegersFromBST(t *TreeNode[int]) []int {
+	// heapindex layout, 2n+1/2n+2
+	if t == nil {
+		return nil
+	}
+
+	var list []int
+	getInorderIntegersFromBST(t, func(v int) {
+		list = append(list, v)
+	})
+
+	return list
+}
+
+func getInorderIntegersFromBST(t *TreeNode[int], doFunc func(int)) {
+	if t == nil {
+		return
+	}
+
+	getInorderIntegersFromBST(t.Left, doFunc)
+	doFunc(t.Val)
+	getInorderIntegersFromBST(t.Right, doFunc)
+
+}
+
+func GenerateTreeFromIntegers(vals []int) *TreeNode[int] {
 	// vals should be a valid string representing a tree where for each position i in the array
 	// i == parent node, 2i+1 is left child, 2i+2 is right child.
 	// Example: 1,2,3,4,5
@@ -87,7 +135,7 @@ func formatTree[T comparable](t *TreeNode[T]) string {
 		return "<nil>\n"
 	}
 	var b strings.Builder
-	b.WriteString(fmt.Sprintf("%v\n", t.Val))
+	fmt.Fprintf(&b, "%v\n", t.Val)
 	writeChildren(t, "", &b)
 	return b.String()
 }
@@ -110,7 +158,7 @@ func writeChildren[T comparable](t *TreeNode[T], prefix string, b *strings.Build
 		}
 		b.WriteString(prefix)
 		b.WriteString(branch)
-		b.WriteString(fmt.Sprintf("%v\n", child.Val))
+		fmt.Fprintf(b, "%v\n", child.Val)
 		writeChildren(child, next, b)
 	}
 
